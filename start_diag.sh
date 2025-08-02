@@ -6,14 +6,23 @@
 # Navigate to the script's directory to ensure correct relative paths
 cd "$(dirname "$0")"
 
-CHOICE=$(zenity --info --title="PulseDiag OS"     --text="Welcome to PulseDiag OS. Please choose a diagnostic scan to run."     --ok-label="Quit"     --extra-button="Quick Scan"     --extra-button="Deep Scan")
+# Activate the Python virtual environment
+source venv/bin/activate
+
+# Run the Textual TUI menu
+CHOICE=$(python3 menu.py)
 
 case "$CHOICE" in
-    "Quick Scan")
+    "quick_scan")
         gnome-terminal -- bash -c "./diagnostics/quickcheck.sh; exec bash"
         ;;
-    "Deep Scan")
+    "deep_scan")
         gnome-terminal -- bash -c "./diagnostics/deepcheck.sh; exec bash"
+        ;;
+    "quit")
+        echo "Exiting PulseDiag OS. Goodbye!"
         ;;
 esac
 
+# Deactivate the virtual environment (optional, as the script exits)
+deactivate
