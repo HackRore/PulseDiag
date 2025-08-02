@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script generates a PDF report from a Markdown diagnostic report.
+# It uses pandoc to convert the Markdown file into a professional-looking PDF.
+
 # --- Configuration ---
 LOGO_PATH="../assets/logo.png"
 REPORT_THEME="../assets/report_theme.css" # Optional: For custom styling
@@ -31,7 +34,7 @@ pandoc "$MARKDOWN_FILE" \
     -V geometry:"top=1in, bottom=1in, left=1in, right=1in" \
     -V mainfont="Arial" \
     --variable=logo:"$LOGO_PATH" \
-    --variable=title:"SmartDiag OS Report" \
+    --variable=title:"PulseDiag OS Report" \
     --template=../assets/report_template.tex # A simple LaTeX template
 
 if [ $? -eq 0 ]; then
@@ -39,3 +42,4 @@ if [ $? -eq 0 ]; then
 else
     echo "❌ Error generating PDF report. Make sure pandoc and a LaTeX engine are installed."
 fi
+

@@ -1,5 +1,10 @@
 
 
+# ai_troubleshooter.py
+#
+# This script provides AI-assisted troubleshooting suggestions based on a diagnostic report.
+# It can interact with an external AI model or fall back to rule-based suggestions if offline.
+
 import argparse
 import json
 import os
@@ -19,7 +24,7 @@ def call_ai_model(report_content):
 
     # A more sophisticated prompt for the AI
     prompt = f"""
-    As a Level 3 IT Support Technician, analyze the following SmartDiag OS diagnostic report.
+    As a Level 3 IT Support Technician, analyze the following PulseDiag OS diagnostic report.
     Provide a concise, expert analysis of the potential issues and recommend specific, actionable steps for a field technician.
     Structure your response with the following Markdown headings:
     - ### Summary of Issues

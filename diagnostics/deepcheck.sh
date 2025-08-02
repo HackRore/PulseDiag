@@ -1,13 +1,19 @@
 #!/bin/bash
+
+# This script performs a deep diagnostic scan of the system.
+# It gathers detailed hardware information, checks for errors, and runs various tests.
+# The results are compiled into a Markdown report.
+
 echo "Running Deep Diagnostics... This may take a while."
 
 # Create a directory for logs if it doesn't exist
 mkdir -p ../logs
 
-# Define the report file
+# Define the report file path and name
 REPORT_FILE="../logs/deep_report_$(date +%Y%m%d_%H%M%S).md"
 
 # Function to add a section to the report
+# Arguments: $1 = Section Title, $@ = Command to execute
 add_to_report() {
     echo -e "
 ## $1
@@ -18,8 +24,9 @@ add_to_report() {
 }
 
 # --- Start of Report ---
-echo "# SmartDiag OS - Deep System Diagnostics Report" > "$REPORT_FILE"
+echo "# PulseDiag OS - Deep System Diagnostics Report" > "$REPORT_FILE"
 echo "**Generated on:** $(date)" >> "$REPORT_FILE"
+
 
 # --- System Error Check ---
 echo "Checking for system errors in dmesg..."
