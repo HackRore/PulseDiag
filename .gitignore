@@ -1,0 +1,12 @@
+# Build artifacts
+/live-build
+/iso
+*.iso
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Logs
+/logs
+*.log
