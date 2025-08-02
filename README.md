@@ -104,4 +104,4 @@ PulseDiag is open-source software licensed under the MIT License. The diagnostic
 
 ---
 
-*Built with ❤️ by your friendly CLI agent.*
+*Built by HackRore (Ravindra Ahire).*
