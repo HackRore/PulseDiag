@@ -4,20 +4,28 @@
 # It gathers detailed hardware information, checks for errors, and runs various tests.
 # The results are compiled into a Markdown report.
 
+# Function to read values from config.ini
+get_config_value() {
+    local section=$1
+    local key=$2
+    grep -A 100 "[$section]" ../config.ini | grep "$key =" | head -1 | cut -d '=' -f 2 | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+}
+
+# Read log directory from config.ini
+LOG_DIR="../$(get_config_value "General" "log_directory")"
+
 echo "Running Deep Diagnostics... This may take a while."
 
 # Create a directory for logs if it doesn't exist
-mkdir -p ../logs
+mkdir -p "$LOG_DIR"
 
 # Define the report file path and name
-REPORT_FILE="../logs/deep_report_$(date +%Y%m%d_%H%M%S).md"
+REPORT_FILE="$LOG_DIR/deep_report_$(date +%Y%m%d_%H%M%S).md"
 
 # Function to add a section to the report
 # Arguments: $1 = Section Title, $@ = Command to execute
 add_to_report() {
-    echo -e "
-## $1
-" >> "$REPORT_FILE"
+    echo -e "\n## $1\n" >> "$REPORT_FILE"
     echo '```' >> "$REPORT_FILE"
     "$@" >> "$REPORT_FILE" 2>&1
     echo '```' >> "$REPORT_FILE"

@@ -3,10 +3,17 @@
 # This script generates an HTML report from a Markdown diagnostic report.
 # It uses pandoc to convert the Markdown file into a professional-looking HTML file.
 
+# Function to read values from config.ini
+get_config_value() {
+    local section=$1
+    local key=$2
+    grep -A 100 "\[$section\]" ../config.ini | grep "$key =" | head -1 | cut -d '=' -f 2 | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+}
+
 # --- Configuration ---
 LOGO_PATH="../assets/logo.png"
 REPORT_THEME="../assets/report_theme.css" # For custom styling
-OUTPUT_DIR="../reports"
+OUTPUT_DIR="../$(get_config_value "General" "report_directory")"
 mkdir -p "$OUTPUT_DIR"
 
 # --- Check for input file ---

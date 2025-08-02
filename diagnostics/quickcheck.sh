@@ -2,15 +2,25 @@
 
 # This script performs a quick diagnostic scan of the system.
 # It gathers basic system information and checks common hardware components.
-# The results are compiled into a Markdown report.
+# The results are compiled into a markdown report.
+
+# Function to read values from config.ini
+get_config_value() {
+    local section=$1
+    local key=$2
+    grep -A 100 "\[$section\]" ../config.ini | grep "$key =" | head -1 | cut -d '=' -f 2 | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+}
+
+# Read log directory from config.ini
+LOG_DIR="../$(get_config_value "General" "log_directory")"
 
 echo "Running Quick Diagnostics..."
 
 # Create a directory for logs if it doesn't exist
-mkdir -p ../logs
+mkdir -p "$LOG_DIR"
 
 # Define the report file path and name
-REPORT_FILE="../logs/quick_report_$(date +%Y%m%d_%H%M%S).md"
+REPORT_FILE="$LOG_DIR/quick_report_$(date +%Y%m%d_%H%M%S).md"
 
 # Function to add a section to the report
 # Arguments: $1 = Section Title, $@ = Command to execute

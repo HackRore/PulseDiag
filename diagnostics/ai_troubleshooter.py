@@ -1,5 +1,3 @@
-
-
 # ai_troubleshooter.py
 #
 # This script provides AI-assisted troubleshooting suggestions based on a diagnostic report.
@@ -9,6 +7,15 @@ import argparse
 import json
 import os
 import re
+import configparser
+
+# --- Configuration Loading ---
+def get_config_value(section, key):
+    config = configparser.ConfigParser()
+    # Assuming config.ini is in the parent directory of diagnostics/
+    config_path = os.path.join(os.path.dirname(__file__), '..', 'config.ini')
+    config.read(config_path)
+    return config.get(section, key)
 
 # --- AI Model Interaction ---
 def call_ai_model(report_content):
@@ -18,8 +25,12 @@ def call_ai_model(report_content):
     """
     print("Attempting to get suggestions from AI model...")
 
-    if os.getenv("AI_OFFLINE") == "true":
-        print("AI model is offline. Returning None.")
+    ai_offline_mode = get_config_value("AI", "ai_offline_mode").lower() == 'true'
+    ai_api_key = get_config_value("AI", "ai_api_key")
+    ai_endpoint = get_config_value("AI", "ai_endpoint")
+
+    if ai_offline_mode:
+        print("AI model is offline (configured). Returning None.")
         return None
 
     # A more sophisticated prompt for the AI
@@ -125,4 +136,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
