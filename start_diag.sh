@@ -20,19 +20,21 @@ DEEP_SCAN_SCRIPT=$(get_config_value "Diagnostics" "deep_scan_script")
 # Activate the Python virtual environment
 source venv/bin/activate
 
-# Run the Textual TUI menu
+# Run the Tkinter GUI menu
 CHOICE=$(python3 menu.py)
 
 case "$CHOICE" in
     "quick_scan")
-        gnome-terminal -- bash -c "./$QUICK_SCAN_SCRIPT; exec bash"
-        ;;
+        # Run quick scan in a new terminal
+        lxterminal --command="bash -c './$QUICK_SCAN_SCRIPT; echo -e "\nPress Enter to continue..."; read'"
+        ;; 
     "deep_scan")
-        gnome-terminal -- bash -c "./$DEEP_SCAN_SCRIPT; exec bash"
-        ;;
+        # Run deep scan in a new terminal
+        lxterminal --command="bash -c './$DEEP_SCAN_SCRIPT; echo -e "\nPress Enter to continue..."; read'"
+        ;; 
     "quit")
         echo "Exiting PulseDiag OS. Goodbye!"
-        ;;
+        ;; 
 esac
 
 # Deactivate the virtual environment (optional, as the script exits)

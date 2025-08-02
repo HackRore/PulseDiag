@@ -1,47 +1,47 @@
+import tkinter as tk
+from tkinter import messagebox
+import subprocess
 import sys
-import os
-from textual.app import App, ComposeResult
-from textual.widgets import Header, Footer, Button, Static
-from textual.containers import Container
 
-class PulseDiagApp(App):
-    """A Textual app for PulseDiag OS menu."""
+class PulseDiagGUI(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("PulseDiag OS")
+        self.geometry("400x250")
+        self.create_widgets()
 
-    BINDINGS = [
-        ("q", "quit", "Quit"),
-        ("1", "quick_scan", "Quick Scan"),
-        ("2", "deep_scan", "Deep Scan"),
-    ]
+    def create_widgets(self):
+        # Welcome Label
+        self.welcome_label = tk.Label(self, text="Welcome to PulseDiag OS!", font=("Arial", 16, "bold"))
+        self.welcome_label.pack(pady=10)
 
-    def compose(self) -> ComposeResult:
-        yield Header()
-        yield Container(
-            Static("[bold green]Welcome to PulseDiag OS![/bold green]", classes="title"),
-            Static("Please choose a diagnostic scan to run:", classes="subtitle"),
-            Button("Quick Scan", id="quick_scan_button", variant="primary"),
-            Button("Deep Scan", id="deep_scan_button", variant="primary"),
-            Button("Quit", id="quit_button", variant="error"),
-        )
-        yield Footer()
+        self.instruction_label = tk.Label(self, text="Please choose a diagnostic scan to run:", font=("Arial", 12))
+        self.instruction_label.pack(pady=5)
 
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        if event.button.id == "quick_scan_button":
-            self.action_quick_scan()
-        elif event.button.id == "deep_scan_button":
-            self.action_deep_scan()
-        elif event.button.id == "quit_button":
-            self.action_quit()
+        # Quick Scan Button
+        self.quick_scan_button = tk.Button(self, text="Quick Scan", command=self.run_quick_scan, width=20, height=2)
+        self.quick_scan_button.pack(pady=5)
 
-    def action_quick_scan(self) -> None:
-        self.exit("quick_scan")
+        # Deep Scan Button
+        self.deep_scan_button = tk.Button(self, text="Deep Scan", command=self.run_deep_scan, width=20, height=2)
+        self.deep_scan_button.pack(pady=5)
 
-    def action_deep_scan(self) -> None:
-        self.exit("deep_scan")
+        # Quit Button
+        self.quit_button = tk.Button(self, text="Quit", command=self.quit_app, width=20, height=2, bg="red", fg="white")
+        self.quit_button.pack(pady=10)
 
-    def action_quit(self) -> None:
-        self.exit("quit")
+    def run_quick_scan(self):
+        self.destroy()
+        sys.exit("quick_scan")
+
+    def run_deep_scan(self):
+        self.destroy()
+        sys.exit("deep_scan")
+
+    def quit_app(self):
+        self.destroy()
+        sys.exit("quit")
 
 if __name__ == "__main__":
-    app = PulseDiagApp()
-    result = app.run()
-    sys.exit(result)
+    app = PulseDiagGUI()
+    app.mainloop()
