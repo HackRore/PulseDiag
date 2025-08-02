@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# This script generates a PDF report from a Markdown diagnostic report.
-# It uses pandoc to convert the Markdown file into a professional-looking PDF.
+# This script generates an HTML report from a Markdown diagnostic report.
+# It uses pandoc to convert the Markdown file into a professional-looking HTML file.
 
 # --- Configuration ---
 LOGO_PATH="../assets/logo.png"
-REPORT_THEME="../assets/report_theme.css" # Optional: For custom styling
+REPORT_THEME="../assets/report_theme.css" # For custom styling
 OUTPUT_DIR="../reports"
 mkdir -p "$OUTPUT_DIR"
 
@@ -20,26 +20,23 @@ if [ ! -f "$MARKDOWN_FILE" ]; then
     exit 1
 fi
 
-# --- Generate PDF ---
+# --- Generate HTML ---
 BASE_NAME=$(basename "$MARKDOWN_FILE" .md)
-PDF_OUTPUT="$OUTPUT_DIR/${BASE_NAME}.pdf"
+HTML_OUTPUT="$OUTPUT_DIR/${BASE_NAME}.html"
 
-echo "Generating PDF report for $MARKDOWN_FILE..."
+echo "Generating HTML report for $MARKDOWN_FILE..."
 
 pandoc "$MARKDOWN_FILE" \
-    -o "$PDF_OUTPUT" \
+    -o "$HTML_OUTPUT" \
     --from=markdown \
-    --to=pdf \
-    --pdf-engine=xelatex \
-    -V geometry:"top=1in, bottom=1in, left=1in, right=1in" \
-    -V mainfont="Arial" \
+    --to=html5 \
+    --css="$REPORT_THEME" \
+    --self-contained \
     --variable=logo:"$LOGO_PATH" \
-    --variable=title:"PulseDiag OS Report" \
-    --template=../assets/report_template.tex # A simple LaTeX template
+    --variable=title:"PulseDiag OS Report"
 
 if [ $? -eq 0 ]; then
-    echo "✅ PDF report successfully generated at $PDF_OUTPUT"
+    echo "✅ HTML report successfully generated at $HTML_OUTPUT"
 else
-    echo "❌ Error generating PDF report. Make sure pandoc and a LaTeX engine are installed."
+    echo "❌ Error generating HTML report. Make sure pandoc is installed."
 fi
-
